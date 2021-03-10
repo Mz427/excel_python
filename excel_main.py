@@ -1,6 +1,6 @@
 from openpyxl import Workbook
 from openpyxl import load_workbook
-from datetime import date
+from print_date_of_week import DateOfWeek
 
 '''
 wb_week = Workbook()
@@ -32,9 +32,10 @@ wb_week.save("sample.xlsx")
 
 #wb_week = Workbook()
 
-def qing_suan():
-	#wb_qing_suan = load_workbook("")
-	current_date = date.today()
-	current_week = current_date.isoweekday()
-	if current_week == 7:
-qing_suan()
+mz_today = DateOfWeek()
+
+for i in mz_today.get_week_date():
+    print(i)
+
+for i in mz_today.sheet_name_date():
+    print(i)
