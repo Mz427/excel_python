@@ -30,12 +30,22 @@ for row in ws.iter_rows(min_row=1, max_col=3, max_row=2, values_only=True):
 wb_week.save("sample.xlsx")
 '''
 
-#wb_week = Workbook()
+wb_week = load_workbook("sample.xlsx")
+ws_week = wb_week.active
+ws_week.max_row
+ws_week.max_column
+l_ben_di = []
+l_yi_di = []
+l_tag = True
 
-mz_today = DateOfWeek()
+for i in range(2, ws_week.max_row + 1):
+	if ws_week.cell(row = i, column = 5).value == "列名5":
+		l_tag = False
+		continue
+	elif l_tag and ws_week.cell(row = i, column = 5).value != None:
+		l_ben_di.append(ws_week.cell(row = i, column = 5).value)
+	elif not l_tag:
+		l_yi_di.append(ws_week.cell(row = i, column = 5).value)
 
-for i in mz_today.get_week_date():
-    print(i)
-
-for i in mz_today.sheet_name_date():
-    print(i)
+print(l_ben_di)
+print(l_yi_di)
