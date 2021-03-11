@@ -1,10 +1,34 @@
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from print_date_of_week import DateOfWeek
+from zhou_bao_files import ZhouBaoSource
+
+#wb_week = Workbook()
+#ws = wb_week.active
+wb_week = load_workbook("统计表格.xlsx")
+ws_week = wb_week.active
+ws_week.max_row
+ws_week.max_column
+
+def create_new_table(self):
+def qing_suan():
+        l_ben_di = []
+    l_yi_di = []
+    l_tag = True
+    
+    for i in range(2, ws_week.max_row + 1):
+    	if ws_week.cell(row = i, column = 5).value == "列名5":
+    		l_tag = False
+    		continue
+    	elif l_tag and ws_week.cell(row = i, column = 5).value != None:
+    		l_ben_di.append(ws_week.cell(row = i, column = 5).value)
+    	elif not l_tag:
+    		l_yi_di.append(ws_week.cell(row = i, column = 5).value)
+    
+    print(l_ben_di)
+    print(l_yi_di)
 
 '''
-wb_week = Workbook()
-ws = wb_week.active
 
 ws['A1'] = 42
 ws.append([1, 2, 3])
@@ -29,23 +53,3 @@ for row in ws.iter_rows(min_row=1, max_col=3, max_row=2, values_only=True):
 
 wb_week.save("sample.xlsx")
 '''
-
-wb_week = load_workbook("sample.xlsx")
-ws_week = wb_week.active
-ws_week.max_row
-ws_week.max_column
-l_ben_di = []
-l_yi_di = []
-l_tag = True
-
-for i in range(2, ws_week.max_row + 1):
-	if ws_week.cell(row = i, column = 5).value == "列名5":
-		l_tag = False
-		continue
-	elif l_tag and ws_week.cell(row = i, column = 5).value != None:
-		l_ben_di.append(ws_week.cell(row = i, column = 5).value)
-	elif not l_tag:
-		l_yi_di.append(ws_week.cell(row = i, column = 5).value)
-
-print(l_ben_di)
-print(l_yi_di)
