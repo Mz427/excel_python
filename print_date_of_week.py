@@ -5,17 +5,18 @@ class DateOfWeek:
     def __init__(self):
         self.the_work_day = date.today()
         self.current_week = self.the_work_day.weekday()
-        if self.current_week == 0:
-            self.the_work_day += timedelta(-1)
-        self.the_month_calendar = calendar.Calendar(0).monthdatescalendar(self.the_work_day.year, self.the_work_day.month)
+        self.the_month_calendar = []
         calendar.setfirstweekday(0)
 
     def get_week_date(self):
-        if self.the_work_day.weekday() == 6:
-            for week_i in self.the_month_calendar:
-                for day_i in week_i:
-                    if self.the_work_day == day_i:
-                        return week_i
+        if self.current_week != 6:
+            self.the_work_day += timedelta(-(self.current_week + 1))
+        self.the_month_calendar = calendar.Calendar(0).monthdatescalendar(self.the_work_day.year, self.the_work_day.month)
+
+        for week_i in self.the_month_calendar:
+            for day_i in week_i:
+                if self.the_work_day == day_i:
+                    return week_i
 
     def sheet_name_date(self):
         sheet_name_day = []
