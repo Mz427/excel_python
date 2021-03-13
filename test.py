@@ -1,47 +1,45 @@
-from datetime import date, timedelta
-import calendar
+from openpyxl import Workbook
+from openpyxl import load_workbook
+from zhou_bao_files import ZhouBaoSource
+#from print_date_of_week import DateOfWeek
 
+zb_source_files = ZhouBaoSource()
+current_month_dir = zb_source_files.current_month_dir
+zb_source_files_sheets = zb_source_files.work_week.sheet_name_date()
+zb_bian_jie_zhi = zb_source_files.work_week.bian_jie_zhi
 
+if zb_source_files.work_week.diferent_month:
+    qing_suan(load_workbook(zb_source_files.last_week_qs), zb_source_files_sheets[:zb_bian_jie_zhi])
+    qing_suan(load_workbook(zb_source_files.current_week_qs), zb_source_files_sheets[zb_bian_jie_zhi:])
+else:
+    qing_suan(load_workbook(zb_source_files.current_week_qs, zb_source_files_sheets[:zb_bian_jie_zhi]))
 
-the_work_day = date.fromisoformat('2021-04-04')
-current_week = the_work_day.weekday()
-if current_week == 0:
-    the_work_day += timedelta(days = -1)
-the_month_calendar = calendar.Calendar(0).monthdatescalendar(the_work_day.year, the_work_day.month)
-calendar.setfirstweekday(0)
+def qing_suan(wb_qs_name, ws_qs_names):
+    hui_zong_qs = []
+    l_ben_di = []
+    l_yi_di = []
+    l_tag = True
+    jin_e_column = 10
+    wb_qs = load_workbook(wb_qs_name)
 
-def get_week_date():
-    if the_work_day.weekday() == 6:
-        for week_i in the_month_calendar:
-            for day_i in week_i:
-                if the_work_day == day_i:
-                    return week_i
+    for i in ws_qs_names:
+        ws_qs = wb_qs[i]
 
-def sheet_name_date():
-    sheet_name_day = []
-    this_work_week = get_week_date()
+        for j in range(4, ws_qs.max_row + 1):
+            if ws_qs.cell(row = i, column = jin_e_column).value != None and l_tag:
+                if red:
+                    本地未处理笔数 += 1
+                    本地未处理金额 += admount
+                本地总笔数 += 1
+                本地总金额 += admount
+            elif l_tag and ws_week.cell(row = i, column = jin_e_column).value != None:
+                i += 3
+                l_tag = False
+                #continue
+            elif not l_tag:
+                l_yi_di.append(ws_week.cell(row = i, column = jin_e_column).value)
 
-    for day_i in this_work_week:
-        sheet_name_day.append(day_i.strftime("%d"))
+            print(l_ben_di)
+            print(l_yi_di)
 
-    return sheet_name_day
-
-def get_zb_source_suffix():
-    sheet_name_day = sheet_name_date()
-    this_work_week = get_week_date()
-    zb_source_suffix = []
-    zb_source_suffix.append(this_work_week[6].strftime("%Y%m%d"))
-
-    if sheet_name_day[0] > sheet_name_day[6]:
-        for i in this_work_week:
-            if i.strftime("%d") == max(sheet_name_day):
-                zb_source_suffix.append(i.strftime("%Y%m%d"))
-
-    return zb_source_suffix
-
-print(the_work_day)
-print(the_month_calendar)
-print(current_week)
-print(get_week_date())
-print(sheet_name_date())
-print(get_zb_source_suffix())
+    return 
