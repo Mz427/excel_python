@@ -11,23 +11,6 @@ ws_week.max_row
 ws_week.max_column
 
 def create_new_table(self):
-def qing_suan():
-        l_ben_di = []
-    l_yi_di = []
-    l_tag = True
-    
-    for i in range(2, ws_week.max_row + 1):
-    	if ws_week.cell(row = i, column = 5).value == "列名5":
-    		l_tag = False
-    		continue
-    	elif l_tag and ws_week.cell(row = i, column = 5).value != None:
-    		l_ben_di.append(ws_week.cell(row = i, column = 5).value)
-    	elif not l_tag:
-    		l_yi_di.append(ws_week.cell(row = i, column = 5).value)
-    
-    print(l_ben_di)
-    print(l_yi_di)
-
 '''
 
 ws['A1'] = 42
