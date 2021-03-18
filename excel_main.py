@@ -36,3 +36,38 @@ for row in ws.iter_rows(min_row=1, max_col=3, max_row=2, values_only=True):
 
 wb_week.save("sample.xlsx")
 '''
+
+def zhang_wu_ping_heng():
+	hui_zong_zwph = []
+	current_hui_zong = [0] * 2
+
+	for i in 表格: 
+		j = ws_zwph.max_row
+		current_hui_zong[0] += (j - 2)
+
+		while j >= 1 and j列.相差金額 != 0:
+			current_hui_zong[1] += 1
+			j -= 1
+
+		hui_zong_zwph.append(current_hui_zong)
+
+def yi_di_qing_suan():
+	hui_zong_ydqs = []
+	current_hui_zong = [0] * 4
+
+	for i in 表格:
+		current_hui_zong[0] = values
+		current_hui_zong[1] = values
+		current_hui_zong[2] = values
+		current_hui_zong[3] = values
+		hui_zong_ydqs.append(current_hui_zong)
+
+def yi_di_ping_heng():
+	hui_zong_ydph = []
+	current_hui_zong = [0] * 4
+
+	for i in 表格:
+		for j in range(0, 4):
+			current_hui_zong[j] = values
+
+		hui_zong_ydph.append(current_hui_zong)
