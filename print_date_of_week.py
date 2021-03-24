@@ -18,6 +18,33 @@ class DateOfWeek:
                 if self.the_work_day == day_i:
                     return week_i
 
+    def get_week_date_one_day_ago(self):
+        week_today = self.get_week_date()
+        week_one_day_ago = []
+
+        for day_i in week_today:
+            week_one_day_ago.append(day_i + timedelta(days = -1))
+
+        return week_one_day_ago
+
+    def get_week_date_two_day_ago(self):
+        week_today = self.get_week_date()
+        week_two_day_ago = []
+
+        for day_i in week_today:
+            week_two_day_ago.append(day_i + timedelta(days = -2))
+
+        return week_two_day_ago
+
+    def get_week_date_three_day_ago(self):
+        week_today = self.get_week_date()
+        week_three_day_ago = []
+
+        for day_i in week_today:
+            week_three_day_ago.append(day_i + timedelta(days = -3))
+
+        return week_three_day_ago
+
     def sheet_name_date(self):
         sheet_name_day = []
         this_work_week = self.get_week_date()
