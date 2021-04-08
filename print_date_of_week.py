@@ -61,7 +61,7 @@ class DateOfWeek:
 
         if sheet_name_day[0] > sheet_name_day[6]:
             self.diferent_month = True
-            for i, j in this_work_week, range(1, 7):
+            for i, j in zip(this_work_week, range(1, 7)):
                 if i.strftime("%d") == max(sheet_name_day):
                     self.bian_jie_zhi = j
                     zb_source_suffix.append(i.strftime("%Y%m%d"))
