@@ -14,34 +14,48 @@ hui_zong_ydjy = []
 hui_zong_ydph = []
 hui_zong_fk = []
 hui_zong_qs = []
-hui_zong_balck = []
+hui_zong_black = [[0,0], [0,0], [0,0], [0,0], [0,0], [0,0], [0,0]]
+
+#excel写入数据
+def write_table_into_sheet(sheet_name, zb_tables, start_position = [1, 1]):
+    current_row = start_position[0]
+    current_column = start_position[1]
+
+    for i in zb_tables:
+        for j in i:
+            sheet_name.cell(row = current_row, column = current_column).value = j
+            current_column += 1
+        current_row += 1
+        current_column = start_position[1]
 
 #周报求和
 def zhou_bao_qiu_he(hui_zong): 
     wb_hui_zong = load_workbook("tong_ji_biao_ge.xlsx")
 
-    for i, j in zip(wb_hui_zong.sheepnames, hui_zong):
-        hui_zong = wb_hui_zong[i]
-        for q in j:
-            hui_zong.append(q)
+    for i, j in zip(wb_hui_zong.sheetnames, hui_zong):
+        ws_hui_zong = wb_hui_zong[i]
+        write_table_into_sheet(ws_hui_zong, j)
+
+    wb_hui_zong.save("tong_ji_biao_ge.xlsx")
 
 #账务平衡
 def zhang_wu_ping_heng(wb_ph_name, ws_ph_names, hui_zong_ph):
     wb_ph = load_workbook(wb_ph_name)
     cha_yi_column = 6
 
-    for i in ws_ph_names:
+    for i, q, o in zip(ws_ph_names, zb_source_files.work_week.get_week_date(), zb_source_files.work_week.get_week_date_two_day_ago()):
         ws_ph = wb_ph[i]
         j = ws_ph.max_row
-        hui_zong_ph_sheet = [0] * 2
-        hui_zong_ph_sheet[0] += (j - 2)
+        hui_zong_ph_sheet = [0] * 4
+        hui_zong_ph_sheet[0] = q
+        hui_zong_ph_sheet[1] = o
+        hui_zong_ph_sheet[2] += (j - 2)
 
         while j >= 1 and ws_ph.cell(row = j, column = cha_yi_column).value != 0:
-            hui_zong_ph_sheet[1] += 1
+            hui_zong_ph_sheet[3] += 1
             j -= 1
 
         hui_zong_ph.append(hui_zong_ph_sheet)
-        hui_zong.append(hui_zong_ph)
 
 #异地交易
 def yi_di_jiao_yi(wb_ydjy_name, ws_ydjy_names, hui_zong_ydjy):
@@ -58,12 +72,11 @@ def yi_di_jiao_yi(wb_ydjy_name, ws_ydjy_names, hui_zong_ydjy):
         hui_zong_ydjy_sheet[0] = j
         hui_zong_ydjy_sheet[1] = q
         hui_zong_ydjy_sheet[2] = int(ws_ydjy.cell(row = ying_shou_row, column = bi_shu_column).value[7:12].replace(",", ""))
-        hui_zong_ydjy_sheet[3] = ws_ydjy.cell(row = ying_shou_row, column = jin_e_column).value[7:]
+        hui_zong_ydjy_sheet[3] = float(ws_ydjy.cell(row = ying_shou_row, column = jin_e_column).value[7:])
         hui_zong_ydjy_sheet[4] = int(ws_ydjy.cell(row = ying_fu_row, column = bi_shu_column).value[7:13].replace(",", ""))
-        hui_zong_ydjy_sheet[5] = ws_ydjy.cell(row = ying_fu_row, column = jin_e_column).value[7:]
+        hui_zong_ydjy_sheet[5] = float(ws_ydjy.cell(row = ying_fu_row, column = jin_e_column).value[7:])
         
         hui_zong_ydjy.append(hui_zong_ydjy_sheet)
-        hui_zong.append(hui_zong_ydjy)
 
 #异地平衡
 def yi_di_ping_heng(wb_ydph_name, ws_ydph_names, hui_zong_ydph):
@@ -78,10 +91,10 @@ def yi_di_ping_heng(wb_ydph_name, ws_ydph_names, hui_zong_ydph):
         hui_zong_ydph_sheet[1] = p
                 
         for q in range(0, 4):
-            hui_zong_ydph_sheet[q + 2] = ws_ydph.cell(row = jin_e_row, column = jin_e_column + q).value
+            tmp_q = q + 2
+            hui_zong_ydph_sheet[tmp_q] = ws_ydph.cell(row = jin_e_row, column = jin_e_column + q).value
 
         hui_zong_ydph.append(hui_zong_ydph_sheet)
-        hui_zong.append(hui_zong_ydph)
 
 #发卡网点异常流水
 def fa_ka(wb_fk_name, ws_fk_names, hui_zong_fk):
@@ -116,7 +129,6 @@ def fa_ka(wb_fk_name, ws_fk_names, hui_zong_fk):
             j += 1
 
         hui_zong_fk.append(hui_zong_fk_sheet)
-        hui_zong.append(hui_zong_fk)
 
 #清算异常流水
 def qing_suan(wb_qs_name, ws_qs_names, hui_zong_qs):
@@ -151,7 +163,6 @@ def qing_suan(wb_qs_name, ws_qs_names, hui_zong_qs):
             j += 1
 
         hui_zong_qs.append(hui_zong_qs_sheet)
-        hui_zong.append(hui_zong_qs)
 
 if zb_source_files.work_week.diferent_month:
     qing_suan(zb_source_files.last_week_qs, zb_source_files_sheets[:zb_bian_jie_zhi], hui_zong_qs)
@@ -170,5 +181,12 @@ else:
     zhang_wu_ping_heng(zb_source_files.current_week_ph, zb_source_files_sheets[:zb_bian_jie_zhi], hui_zong_ph)
     yi_di_jiao_yi(zb_source_files.current_week_ydjy, zb_source_files_sheets[:zb_bian_jie_zhi], hui_zong_ydjy)
     yi_di_ping_heng(zb_source_files.current_week_ydph, zb_source_files_sheets[:zb_bian_jie_zhi], hui_zong_ydph)
+
+hui_zong.append(hui_zong_qs)
+hui_zong.append(hui_zong_fk)
+hui_zong.append(hui_zong_ph)
+hui_zong.append(hui_zong_black)
+hui_zong.append(hui_zong_ydjy)
+hui_zong.append(hui_zong_ydph)
 
 zhou_bao_qiu_he(hui_zong)
