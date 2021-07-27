@@ -1,6 +1,6 @@
 from openpyxl import Workbook
 from openpyxl import load_workbook
-from zhou_bao_files import ZhouBaoSource
+from weekly_report_files.py import ZhouBaoSource
 #from print_date_of_week import DateOfWeek
 
 zb_source_files = ZhouBaoSource()
@@ -33,7 +33,7 @@ def write_table_into_sheet(sheet_name, zb_tables, start_position = [1, 1]):
         current_column = start_position[1]
 
 #周报求和
-def zhou_bao_qiu_he(hui_zong): 
+def zhou_bao_qiu_he(hui_zong):
     wb_hui_zong = load_workbook("tong_ji_biao_ge.xlsx")
 
     for i, j in zip(wb_hui_zong.sheetnames, hui_zong):
@@ -79,7 +79,7 @@ def yi_di_jiao_yi(wb_ydjy_name, ws_ydjy_names, zb_w1, zb_w2, hui_zong_ydjy):
         hui_zong_ydjy_sheet[3] = float(ws_ydjy.cell(row = ying_shou_row, column = jin_e_column).value[7:].replace(",", ""))
         hui_zong_ydjy_sheet[4] = int(ws_ydjy.cell(row = ying_fu_row, column = bi_shu_column).value[7:13].replace(",", ""))
         hui_zong_ydjy_sheet[5] = float(ws_ydjy.cell(row = ying_fu_row, column = jin_e_column).value[7:].replace(",", ""))
-        
+
         hui_zong_ydjy.append(hui_zong_ydjy_sheet)
 
 #异地平衡
@@ -89,11 +89,11 @@ def yi_di_ping_heng(wb_ydph_name, ws_ydph_names, zb_w1, zb_w4, hui_zong_ydph):
     for i, j, p in zip(ws_ydph_names, zb_w1, zb_w4):
         ws_ydph = wb_ydph[i]
         jin_e_row = 3
-        jin_e_column = 2 
+        jin_e_column = 2
         hui_zong_ydph_sheet = [0] * 6
         hui_zong_ydph_sheet[0] = j
         hui_zong_ydph_sheet[1] = p
-                
+
         for q in range(0, 4):
             tmp_q = q + 2
             hui_zong_ydph_sheet[tmp_q] = ws_ydph.cell(row = jin_e_row, column = jin_e_column + q).value
