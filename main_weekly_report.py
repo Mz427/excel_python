@@ -34,13 +34,13 @@ def write_table_into_sheet(sheet_name, zb_tables, start_position = [1, 1]):
 
 #周报求和
 def zhou_bao_qiu_he(hui_zong):
-    wb_hui_zong = load_workbook("tong_ji_biao_ge.xlsx")
+    wb_hui_zong = load_workbook("report_week.xlsx")
 
     for i, j in zip(wb_hui_zong.sheetnames, hui_zong):
         ws_hui_zong = wb_hui_zong[i]
         write_table_into_sheet(ws_hui_zong, j)
 
-    wb_hui_zong.save("tong_ji_biao_ge.xlsx")
+    wb_hui_zong.save("report_week.xlsx")
 
 #账务平衡
 def zhang_wu_ping_heng(wb_ph_name, ws_ph_names, zb_w1, zb_w3, hui_zong_ph):
@@ -75,9 +75,9 @@ def yi_di_jiao_yi(wb_ydjy_name, ws_ydjy_names, zb_w1, zb_w2, hui_zong_ydjy):
 
         hui_zong_ydjy_sheet[0] = j
         hui_zong_ydjy_sheet[1] = q
-        hui_zong_ydjy_sheet[2] = int(ws_ydjy.cell(row = ying_shou_row, column = bi_shu_column).value[7:12].replace(",", ""))
+        hui_zong_ydjy_sheet[2] = float(ws_ydjy.cell(row = ying_shou_row, column = bi_shu_column).value[7:].replace(",", ""))
         hui_zong_ydjy_sheet[3] = float(ws_ydjy.cell(row = ying_shou_row, column = jin_e_column).value[7:].replace(",", ""))
-        hui_zong_ydjy_sheet[4] = int(ws_ydjy.cell(row = ying_fu_row, column = bi_shu_column).value[7:13].replace(",", ""))
+        hui_zong_ydjy_sheet[4] = float(ws_ydjy.cell(row = ying_fu_row, column = bi_shu_column).value[7:].replace(",", ""))
         hui_zong_ydjy_sheet[5] = float(ws_ydjy.cell(row = ying_fu_row, column = jin_e_column).value[7:].replace(",", ""))
 
         hui_zong_ydjy.append(hui_zong_ydjy_sheet)
