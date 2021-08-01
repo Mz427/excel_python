@@ -1,7 +1,8 @@
 深圳运维工作记录*
 __pycache__
 .vs
-*.doc
-*.docx
-*.xlsx
+*doc
+*docx
+*xlsx
 template*
+report_week.xlsx

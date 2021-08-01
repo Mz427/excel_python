@@ -1,6 +1,6 @@
 from openpyxl import Workbook
 from openpyxl import load_workbook
-from weekly_report_files.py import ZhouBaoSource
+from weekly_report_files import ZhouBaoSource
 #from print_date_of_week import DateOfWeek
 
 zb_source_files = ZhouBaoSource()
